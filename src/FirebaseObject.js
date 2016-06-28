@@ -153,10 +153,10 @@
          * @param {string} varName
          * @returns a promise which resolves to an unbind method after data is set in scope
          */
-        $bindTo: function (scope, varName) {
+        $bindTo: function (scope, varName, maxWait) {
           var self = this;
           return self.$loaded().then(function () {
-            return self.$$conf.binding.bindTo(scope, varName);
+            return self.$$conf.binding.bindTo(scope, varName, maxWait);
           });
         },
 
@@ -334,7 +334,7 @@
           }
         },
 
-        bindTo: function(scope, varName) {
+        bindTo: function(scope, varName, maxWait) {
           function _bind(self) {
             var sending = false;
             var parsed = $parse(varName);
@@ -364,7 +364,7 @@
                   setScope(rec);
                 }
               );
-            }, 50, 500);
+            }, 500, maxWait);
 
             var scopeUpdated = function(newVal) {
               newVal = newVal[0];
